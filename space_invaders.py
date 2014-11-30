@@ -1,24 +1,25 @@
 __author__ = 'Stefano Bianucci'
 
 import pygame
-import os
 import sys
+
+from gamelib.sprite import Sprite
 
 # library initialization
 pygame.init()
 
 # game screen creation
-screen = pygame.display.set_mode((800, 600),
-                                 pygame.DOUBLEBUF | pygame.HWSURFACE)
+screen = pygame.display.set_mode(
+    (800, 600), pygame.DOUBLEBUF | pygame.HWSURFACE)
 
 # version of the game
-pygame.display.set_caption("Version 0.2.0")
+pygame.display.set_caption("Version 0.3.0")
 
 # drawing surface
 surf = pygame.display.get_surface()
 
-# player creation
-player = pygame.image.load(os.path.join("gfx", "player.png"))
+sprite = Sprite(surf)
+sprite.load("gfx", ["player_0.png", "player_1.png"])
 
 # movement's coordinates
 dx = 0
@@ -53,18 +54,26 @@ def handle_events(events):
         else:
             print event
 
-x = 10
-y = 10
+
+clock = pygame.time.Clock()
 
 # cycle of game
 while True:
     handle_events(pygame.event.get())
 
-    x += dx
-    y += dy
+    sprite.x += dx
+    sprite.y += dy
+
+    # setting background color
+    surf.fill((0, 0, 0))
 
     # player drawing
-    surf.blit(player, (x, y))
+    sprite.blit()
+
+    # speed setting
+    clock.tick(50)
+
+    sprite.update()
 
     # flip screen
     pygame.display.flip()
