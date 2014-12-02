@@ -3,7 +3,8 @@ __author__ = 'Stefano Bianucci'
 import pygame
 import sys
 
-from gamelib.sprite import Sprite
+from spaceinv.enemy_manager import EnemyManager
+from spaceinv.ship import Ship
 
 # library initialization
 pygame.init()
@@ -13,13 +14,10 @@ screen = pygame.display.set_mode(
     (800, 600), pygame.DOUBLEBUF | pygame.HWSURFACE)
 
 # version of the game
-pygame.display.set_caption("Version 0.3.0")
+pygame.display.set_caption("Version 0.4.0")
 
 # drawing surface
 surf = pygame.display.get_surface()
-
-sprite = Sprite(surf)
-sprite.load("gfx", ["player_0.png", "player_1.png"])
 
 # movement's coordinates
 dx = 0
@@ -42,38 +40,43 @@ def handle_events(events):
                 dx = 1
             elif event.key == 276:  # left
                 dx = -1
-            elif event.key == 274:  # down
-                dy = 1
-            elif event.key == 273:  # up
-                dy = -1
         elif event.type == pygame.KEYUP:
             if event.key in (275, 276):
                 dx = 0
-            elif event.key in (274, 273):
-                dy = 0
         else:
             print event
 
+def create_enemies(em):
+    row = 0
+    while row < 4:
+        col = 0
+        while col < 4:
+            em.add(col * 80, row * 80)
+            col += 1
+        row += 1
 
+em = EnemyManager(surf)
+create_enemies(em)
+
+ship = Ship(surf)
+ship.init()
 clock = pygame.time.Clock()
+ship.x = 100
 
 # cycle of game
 while True:
     handle_events(pygame.event.get())
 
-    sprite.x += dx
-    sprite.y += dy
-
+    ship.x += dx
     # setting background color
     surf.fill((0, 0, 0))
 
-    # player drawing
-    sprite.blit()
+    em.render()
+    ship.render()
 
     # speed setting
     clock.tick(50)
 
-    sprite.update()
-
+    em.update()
     # flip screen
     pygame.display.flip()
