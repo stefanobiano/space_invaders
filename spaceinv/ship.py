@@ -13,8 +13,9 @@ class Ship(Sprite):
         self.update_rate = 0
         self.y = 560
 
-    def init(self):
+    def init(self, bm):
         self.load("gfx", ["player_0.png"])
+        self._bm = bm
 
     def update(self):
         """
@@ -27,3 +28,9 @@ class Ship(Sprite):
 
     def render(self):
         self.blit()
+
+    def fire(self):
+        """
+        shot
+        """
+        self._bm.add(self.x + 6, self.y, -2)

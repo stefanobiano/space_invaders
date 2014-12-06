@@ -12,6 +12,9 @@ class EnemyManager(object):
         self._surf = surf
 
     def add(self, x, y, e_type="a"):
+        """
+        create and add new enemy
+        """
         enemy = Enemy(self._surf)
         enemy.init(e_type)
 
@@ -24,7 +27,12 @@ class EnemyManager(object):
 
     def update(self):
         """
-        update position
+        update enemy position
+
+        if there is one enemy that moves beyond the limit
+        of surf, are moved all
+        this check is made for every enemy
+
         """
         flip = 0
         for en in self._enemies:
@@ -42,3 +50,19 @@ class EnemyManager(object):
     def render(self):
         for en in self._enemies:
             en.render()
+
+    def collide(self, bullet):
+        """
+        check whether the user has hit an enemy
+        if yes, the enemy is deleted
+
+        :param bullet: user shot
+        :return: None
+        """
+        count = 0
+        for enemy in self._enemies:
+            if enemy.is_collide(bullet):
+                del self._enemies[count]
+                return enemy
+            count += 1
+        return None

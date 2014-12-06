@@ -5,6 +5,9 @@ import os
 
 
 class Sprite(object):
+    """
+    parent class for create game components
+    """
     def __init__(self, surf):
         self._surf = surf
 
@@ -69,3 +72,14 @@ class Sprite(object):
         if self.debug_bounding_box:
             pygame.draw.rect(self._surf, (255, 0, 0),
                              (self.x, self.y, self.w, self.h), 1)
+
+    def is_collide(self, sprite):
+        """
+        check if the gamer has killed a enemy
+        :param sprite: user shot
+        :return: boolean
+        """
+        if (sprite.x >= self.x and sprite.x <= (self.x + self.w)) and (
+            sprite.y >= self.y and sprite.y <= (self.y + self.h)):
+            return True
+        return False

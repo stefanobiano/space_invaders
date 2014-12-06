@@ -11,11 +11,10 @@ class Enemy(Sprite):
         super(Enemy, self).__init__(surf)
         self.speed_x = 1
 
-    def init(self, enemy_type = "a"):
+    def init(self, enemy_type="a"):
         self._type = enemy_type
-
-        self.load("gfx",["nemico_" + self._type + "player_0.png",
-                         "nemico_" + self._type + "player_1.png"])
+        self.load("gfx", ["enemy_" + self._type + "player_0.png",
+                          "enemy_" + self._type + "player_1.png"])
 
     def update(self):
         """
